@@ -19,6 +19,7 @@ Reminder: we found the capture on the computer of a graphic designer... after so
 *The packets are probably sent by a graphic tablet.*
 
 We can extract the data with the following command:
+
 ~tshark -r wack.pcapng -T fields -e usb.capdata -Y usb.capdata | sed 's/../:&/g2' > data.txt~
 
 [[file:img/raw.png]]
@@ -32,6 +33,7 @@ The packets match the following pattern to describe the move of the pen:
 The additional ~sed~ is here to separate the bytes with colons, so as to be able to treat them more easily.
 
 The following command separate the X,Y and Z coordinates, discarding the header and the last byte.
+
 ~awk -F: '{x=$3$4;y=$5$6}{z=$7}$1=="02"{print x,y,z}' data.txt > data.awk~
 
 [[file:img/awk.png]]
@@ -51,8 +53,7 @@ for line in open('data.awk').readlines():
         print u16(struct.pack(">H",x)),u16(struct.pack(">H",y))
 #+END_SRC
 
-which we can run with
-~python2 wack_solve.py > plot.txt~
+which we can run with ~python2 wack_solve.py > plot.txt~
 
 Then, we can provide the resulting ~plot.txt~ file to gnuplot:
 
