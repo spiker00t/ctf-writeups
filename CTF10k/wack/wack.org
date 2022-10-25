@@ -24,13 +24,14 @@ We can extract the data with the following command:
 
 [[file:img/raw.png]]
 
+The additional ~sed~ is here to separate the bytes with colons, so as to be able to treat them more easily.
+
 The packets match the following pattern to describe the move of the pen:
 - 02 ??: some header
 - XX XX: X coordinate
 - YY YY: Y coordinate
 - ZZ: Pressure Z of the pen. If Z > 0 then we are actually drawing something!
-
-The additional ~sed~ is here to separate the bytes with colons, so as to be able to treat them more easily.
+- 00: Probably some padding.
 
 The following command separate the X,Y and Z coordinates, discarding the header and the last byte.
 
