@@ -30,7 +30,7 @@ We can first see that there is an empty <p> tag with id ~flag~, which will proba
 
 Moreover, the image is displayed inside of a canvas, and WebGL resources are loaded, we can then easily guess that the image will be displayed with some WebGL shaders.
 
-Then, we can finally take a look at the JS code of ~app.js~. And... aaargh, it's deeply obfuscated, without any explicit identifier. 
+Then, we can finally take a look at the JS code of ~app.js~. And... aaargh, we have to deal with deeply obfuscated JavaScript, without any explicit identifier. 
 
 [[file:img/obfu_js.png]]
 
@@ -425,7 +425,7 @@ During the CTF, I was lazy so I retrieved one by one the characters of the key i
 
 #+end_src
 
-Finally, we enter the key in the webpage, and... Yeaaaaaaah !!! :)
+The key obtained is *REDchickenPIE*. We finally enter the key in the input field of the webpage, and... Yeaaaaaaah !!! :)
 
 [[file:img/good_cat.png]]
 
