@@ -1,6 +1,6 @@
 # imaginaryCTF 2023 - Write-Up for the challenge Sheepish (Reverse)
 
-![challenge][./src/chall.png]
+![challenge](./img/chall.png)
 
 **TL;DR:** Obfuscated Python code using lambda-calculus.
 
@@ -8,7 +8,8 @@
 
 ## Introduction
 
-We are given a Python script, consisting in a single line of ~26k characters, with lots of lambda-functions. The full script is available here, see the beginning and the end of the file below. 
+We are given a Python script, consisting in a single line of ~26k characters, with lots of lambda-functions. The full script is available ![here](./src/sheepish.py)
+, see the beginning and the end of the file below. 
 
 ```python
 print((((lambda _____________:((lambda ___:_____________(lambda _______:___(___)(_______)))(lambda ___:_____________(lambda _______:___(___)(_______)))))(lambda _____________:lambda ___________:lambda ______:(lambda ____:(lambda _:_(lambda __________:lambda _____:__________))(____))(___________)(lambda _:(lambda __________:lambda _____:__________))(lambda _:(lambda __________:lambda _____:__________(_____)(lambda __________:lambda _____:_____))((lambda __________:lambda _____:(lambda __________:lambda _____:__________(_____)(lambda __________:lambda _____:_____))((lambda __________:lambda _____:(lambda __________:__________(lambda _:(lambda __________:lambda _____:_____))(lambda __________:lambda _____:__________))
@@ -60,7 +61,8 @@ The script is now way shorter, and a bit understandable. We can recognize a sequ
 
 The characters of the flag, maybe?
 
-To solve the chall, I took the expressions, and I reimplemented the operators:
+To solve the chall, I took the expressions, and I reimplemented the operators (full script ![here](./src/sheepish_arith.py)):
+
 ```python
 def plus(x):
     return lambda y: x + y
