@@ -56,7 +56,7 @@ four = (succ)(three)
 The script is now way shorter, and a bit understandable (see [here](./src/sheepish_deobf2.py)). We can recognize a sequence of arithmetic expressions, such as:
 
 ```
-((plus)(mult((power)(two)(four))(succ(mult(two)(three))))((plus)(mult (two) (three))(succ(mult(two)(three)))))
+((plus)(mult((power)(two)(four))(succ(mult(two)(three))))((plus)(mult(two)(three))(succ(mult(two)(three)))))
 ```
 
 The characters of the flag, maybe?
@@ -83,7 +83,7 @@ four = 4
 
 flag = ""
 
-flag += chr(((plus)(mult((power)(two)(four))(succ(mult(two)(three))))((plus)(mult (two) (three))(succ(mult(two)(three))))))
+flag += chr(((plus)(mult((power)(two)(four))(succ(mult(two)(three))))((plus)(mult(two)(three))(succ(mult(two)(three))))))
 flag += chr(((plus)(mult((power)(two)(four))(three))(mult((plus)(two)(three))(three))))
 [...]
 flag += chr(((plus)(mult((power)(two)(four))(mult(two)(three)))(three)))
