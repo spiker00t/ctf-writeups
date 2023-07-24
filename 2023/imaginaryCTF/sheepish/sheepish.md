@@ -83,10 +83,10 @@ four = 4
 
 flag = ""
 
-flag += chr(((plus)(mult((power)(two)(four))(succ(mult(two)(three)))) ((plus)(mult (two) (three))(succ(mult(two)(three))))))
+flag += chr(((plus)(mult((power)(two)(four))(succ(mult(two)(three))))((plus)(mult (two) (three))(succ(mult(two)(three))))))
 flag += chr(((plus)(mult((power)(two)(four))(three))(mult((plus)(two)(three))(three))))
 [...]
-flag += chr(((plus)(mult((power) (two) (four))(mult(two)(three)))(three)))
+flag += chr(((plus)(mult((power)(two)(four))(mult(two)(three)))(three)))
 flag += chr(((plus)(mult((power)(two)(four))(mult(two)(three)))((power)(three)(two))))
 
 print(flag[::-1])
