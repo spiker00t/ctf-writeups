@@ -58,9 +58,9 @@ local_18 = dlopen_offset2;
 start_libc_mapping = proc_maps::<impl_proc_maps::linux_maps::MapRange>::start(libc_mapping);
 if (CARRY8(start_libc_mapping,dlopen_offset2) == false) {
 	local_10 = start_libc_mapping + dlopen_offset2;
-decrypt_payload(&DAT_5555556e760e,0xa2e820,&DAT_5555556e75fc,0x12,"unleash_your_power");
+	decrypt_payload(&DAT_5555556e760e,0xa2e820,&DAT_5555556e75fc,0x12,"unleash_your_power");
 	str>::to_owned(str_libimplant,&DAT_5555556e75fc,0x12);
-<alloc::string::String_as_core::ops::arith::Add<&str>>::add(path_libc,str_libimplant,"",1);
+	<alloc::string::String_as_core::ops::arith::Add<&str>>::add(path_libc,str_libimplant,"",1);
     dlopen_offset = <alloc::string::String_as_core::ops::deref::Deref>::deref(path_libc);
     process = write_path_to_process(pid,dlopen_offset._0_8_,dlopen_offset._8_8_);
     local_8 = process;
@@ -69,7 +69,7 @@ decrypt_payload(&DAT_5555556e760e,0xa2e820,&DAT_5555556e75fc,0x12,"unleash_your_
     core::ptr::drop_in_place<proc_maps::linux_maps::MapRange>(libc_mapping);
     core::ptr::drop_in_place<sysinfo::linux::system::System>(system);
     return;
-  }
+}
 ```
 
 With `gdb`, I directly jumped to `decrypt_payload` in order to dump the malicious library `libimplant.so`. We can next analyze this library in Ghidra. 
@@ -87,7 +87,7 @@ At this point, my idea was to
 **And that's when I fell into the trap...** since the malware didn't look "very malicious", I was lazy and the end of the CTF was approaching, so I didn't setup a VM and did these steps on my host.
 **Readers, don't do that. Don't be lazy, setup a VM. Even in CTF.**
 
-I missed a subtility: the malware do some requests with a hash in the URL, and the response of the C2 depends on the hash. Therefore, if the binary is ran from outside the live machine, the malware detects it and... shutdown the computer... 
+I missed a subtility: the malware do some requests with a hash in the URL, and the response of the C2 depends on the hash. Therefore, if the binary is ran from outside the live machine, the malware detects it and... shutdown the computer... :clown_face:
 
 ## Flag
 
@@ -148,4 +148,5 @@ After decoding/decryption with CyberChef, we finally get the flag.
 ## Conclusion
 
 A great thanks to the author, I had a lot of fun solving this chall.
-*Dear reader, stay safe, use a VM...* :smile:
+
+*Dear reader, stay safe, use a VM...* :)
