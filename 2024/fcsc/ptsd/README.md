@@ -134,7 +134,7 @@ __int64 __fastcall main(int a1, char **a2, char **a3, __int64 a4, __int64 a5, __
 }
 ```
 
-We can identify four steps: loading clients (status 2), establishing secure channels (status 3), checking clients health (status 4) and getting clients info (status 5). Status 6 should not be reached. Other statuses stops the server.
+We can identify four steps: loading clients (status 2), establishing secure channels (status 3), checking clients health (status 4) and getting clients info (status 5). Status 6 should not be reached. Other statuses stop the server.
 
 ### Status 2 - Loading clients 
 
@@ -276,8 +276,10 @@ If we take a look at the file `records.txt`, we can guess for the first packets 
   - a "packet type" T,
   - the length of the transmitted data L.
   For instance, the first packet is 
-  05 0001 04 41 046A3D5BB1422D914E7F9EADEDAD0F2AFBE0F8CCCD41D97AE89DE40E081C7CF623A528F770985E319B63805C59B267DC67F9712CF7284A6E496F2BBD185F58ED26
-[N] [ C ] [T] [L] [data]
+  ```
+  05 0001 04 41 046A32D[...]ED26
+  [N][ C ][T][L][     data     ]
+  ```
 - Some packets just carry the byte "01", they are probably acknowledgement (ACK) packets.
 
 This can be verified looking at the code of the functions `recv_*` and `send_*` which we will dissect later. Moreover, for each client, the "packet counter" is stored at "key + 3", which is loaded from the "XXXX" parts of the file `keys.db`.
@@ -316,7 +318,7 @@ The shared secret is basically a point on the elliptic curve, represented as byt
 ```c
 __int8 __fastcall derive_skey(__int64 id_server, __int64 pub_client, void **a3)
 {
-	[...]
+    [...]
     ctx = EVP_PKEY_CTX_new(id_server, 0LL);
     if ( ctx )
     {
@@ -345,9 +347,9 @@ __int8 __fastcall derive_skey(__int64 id_server, __int64 pub_client, void **a3)
           }
         }
       }
-	}
-	[...]
-	return v5
+    }
+    [...]
+    return v5
 }
 ```
 
@@ -362,8 +364,10 @@ The encrypted packets are formatted a bit differently: instead of the length and
 - the ciphertext.
 
 For example, 
+```
 05000509BF451252B5BC306E4E7B7BD192D7C261BC0C9C73A8F25C87DF50B0DE 08 F564A77A57BADA34
-[header][        nonce        ][              tag              ][LL][    data      ]
+[header][        nonce        ][              tag              ][LL][     data     ]
+```
 
 But where is the authentication data here?
 
@@ -379,8 +383,8 @@ The counter, stored at `&packet + 2`, is copied into a new location `ptr`, and u
 ```
 __int64 __fastcall aes_encrypt(__int64 skey, unsigned __int8 *a2, unsigned __int8 *a3, void **a4)
 {
-	[...]
-	nonce = malloc(*a2 + 29LL);
+    [...]
+    nonce = malloc(*a2 + 29LL);
     if ( nonce )
     {
       ctx = EVP_CIPHER_CTX_new();
@@ -408,7 +412,7 @@ __int64 __fastcall aes_encrypt(__int64 skey, unsigned __int8 *a2, unsigned __int
         }
       }
     }
-	[...]
+    [...]
     return v8;
 }
 ```
@@ -424,7 +428,7 @@ From now it is quite straightforward to get the flag of the first part: the goal
 
 #### The flag!
 
-I implemented my client in Python + pwntools, with the libraries `ec` and `AESGCM` `cryptography.hazmat.primitives` to work with elliptic curves and AES-GCM encryption.
+I implemented my client in Python + pwntools, with the libraries `ec` and `AESGCM` from `cryptography.hazmat.primitives` to work with elliptic curves and AES-GCM encryption.
 
 It just consists in following the protocol: here is the main part of my script. The full script is available [here](src/exploit_part1.py). The functions `send_msg` and `recv_msg` respectively send and receive encrypted messages with the provided AES key.
 
