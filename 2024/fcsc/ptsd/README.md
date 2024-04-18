@@ -1,24 +1,33 @@
 # FCSC 2024 - Write-Up for the challenge PTSD (Reverse, 2 parts)
 
-**TL;DR:** Reverse of a custom network protocol based on a Elliptic Curve Diffie-Hellman (ECDH) key exchange with AES-GCM encryption + exploitation of an integer overflow in the implementation of the protocol.
+**TL;DR:** Reverse of a custom network protocol based on a Elliptic
+Curve Diffie-Hellman (ECDH) key exchange with AES-GCM encryption +
+exploitation of an integer overflow in the implementation of the
+protocol.
 
 ## First part: PTSD - Init
 
 ![challenge](./img/chall1.png)
 
-**Description (in French):** 
-Vous vous êtes porté volontaire pour mener une évaluation de PTSD : Protocole Très Sécurisé de transmission de Données.
-Ce protocole est utilisé par un serveur pour vérifier l'état des clients associés.
-Dans un premier temps, vous devez établir un canal de communication sécurisé avec le serveur en tant que client n°6.
-Le flag de l'épreuve sera envoyé lorsque le canal de communication sera établi.
-Note : les librairies libcrypto.so.3 et libssl.so.3 sont fournies mais ne sont pas à analyser dans le cadre de cette épreuve.
+**Description (in French):** Vous vous êtes porté volontaire pour
+mener une évaluation de PTSD : Protocole Très Sécurisé de transmission
+de Données.  Ce protocole est utilisé par un serveur pour vérifier
+l'état des clients associés.  Dans un premier temps, vous devez
+établir un canal de communication sécurisé avec le serveur en tant que
+client n°6.  Le flag de l'épreuve sera envoyé lorsque le canal de
+communication sera établi.  Note : les librairies libcrypto.so.3 et
+libssl.so.3 sont fournies mais ne sont pas à analyser dans le cadre de
+cette épreuve.
 
-**Approximate translation:** 
-You volunteered to evaluate PTSD: Protocole Très Sécurisé de transmission de Données (Very Secure Protocol for Data Transmission).
-This protocol is used by a server to check the status of the associated clients.
-In the first place, you have to establish a secure communication channel with the server as the client number 6.
-The flag of the challenge will be sent when the communication channel will be established.
-Note: the libraries libcrypto.so.3 and libssl.so.3 are provided but they are out-of-scope of this challenge.
+**Approximate translation:** You volunteered to evaluate PTSD:
+Protocole Très Sécurisé de transmission de Données (Very Secure
+Protocol for Data Transmission).  This protocol is used by a server to
+check the status of the associated clients.  In the first place, you
+have to establish a secure communication channel with the server as
+the client number 6.  The flag of the challenge will be sent when the
+communication channel will be established.  Note: the libraries
+libcrypto.so.3 and libssl.so.3 are provided but they are out-of-scope
+of this challenge.
 
 ### Introduction
 
@@ -28,7 +37,8 @@ For this challenge, we are given:
 05:0040:12121212121212121212121212121212
 06:FFFF:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
 ```
-- two files containing fake flags: `lv1.flag` and `lv2.flag` (the second one will be for the second part of the challenge),
+- two files containing fake flags: `lv1.flag` and `lv2.flag` (the
+  second one will be for the second part of the challenge),
 - the libraries `libcrypto.so.3` and `libssl.so.3`,
 - a file `records.txt` for the second part of the challenge containing a capture of some exchanges between client 5 and the server:
 ```
@@ -51,14 +61,13 @@ SEND: 05001003A0BD2E66B65B053DC12AE07667FC6BF930A54279F487FF29438ADE2F01F7
 ```
 - the remote binary `server`.
 
-When we run the binary, the server performs some internal operations, sends us a packet, and wait for an answer.
-```
-[rlaspina@ARCH-RLS ptsd] $ ./server
-INFO -- release -- --- PTSD Server v1.54 ---
-INFO -- release -- Loading clients...
-INFO -- release -- Initializing secure channels...
-INFO -- release -- Secure channel already done for 5
-SEND: 060001044104F7D2F1CCFBF6ACA90E0168F0B45DFE275DC54D0919A2007E1CE32674C2620EB73F0821E05FF3D6AA97FC0049FDD2CA7C7F0F6BDA2BA77FE528B4D4600D8A6A5F
+When we run the binary, the server performs some internal operations,
+sends us a packet, and wait for an answer.  ``` [rlaspina@ARCH-RLS
+ptsd] $ ./server INFO -- release -- --- PTSD Server v1.54 --- INFO --
+release -- Loading clients...  INFO -- release -- Initializing secure
+channels...  INFO -- release -- Secure channel already done for 5
+SEND:
+060001044104F7D2F1CCFBF6ACA90E0168F0B45DFE275DC54D0919A2007E1CE32674C2620EB73F0821E05FF3D6AA97FC0049FDD2CA7C7F0F6BDA2BA77FE528B4D4600D8A6A5F
 RECV:
 
 ```
@@ -134,7 +143,10 @@ __int64 __fastcall main(int a1, char **a2, char **a3, __int64 a4, __int64 a5, __
 }
 ```
 
-We can identify four steps: loading clients (status 2), establishing secure channels (status 3), checking clients health (status 4) and getting clients info (status 5). Status 6 should not be reached. Other statuses stop the server.
+We can identify four steps: loading clients (status 2), establishing
+secure channels (status 3), checking clients health (status 4) and
+getting clients info (status 5). Status 6 should not be reached. Other
+statuses stop the server.
 
 ### Status 2 - Loading clients 
 
@@ -156,7 +168,8 @@ Upon success, this function returns 3 so the server will go forward to the next 
 
 ### Status 3 - Establishing secure channels
 
-Interesting things start as the server establish communication channels with the clients.
+Interesting things start as the server establish communication
+channels with the clients.
 
 ```c
 __int64 __fastcall init_channels(__int64 keys, int num_keys)
@@ -262,14 +275,22 @@ LABEL_42:
 }
 ```
 
-First of all, for each key `k`, the server checks if memory at `k + 8` is equal to 16 bytes 0xFF. Actually, `k + 8` corresponds to the field "YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY" from the file `keys.db`. If this field is equal to FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, it means that a channel must be established between the server and the client. The client 5 have already been initialized (that is why we have a message "Secure channel already done for 5" when running the server) but the channel has to be established for client 6.
+First of all, for each key `k`, the server checks if memory at `k + 8`
+is equal to 16 bytes 0xFF. Actually, `k + 8` corresponds to the field
+"YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY" from the file `keys.db`. If this
+field is equal to FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, it means that a
+channel must be established between the server and the client. The
+client 5 have already been initialized (that is why we have a message
+"Secure channel already done for 5" when running the server) but the
+channel has to be established for client 6.
 
 
 #### Format of the packets
 
 But how are the exchanged packets formatted?
 
-If we take a look at the file `records.txt`, we can guess for the first packets that:
+If we take a look at the file `records.txt`, we can guess for the
+first packets that:
 - The packets all have a header containing:
   - the client number N,
   - a kind of "packet counter" C,
@@ -280,21 +301,37 @@ If we take a look at the file `records.txt`, we can guess for the first packets 
   05 0001 04 41 046A32D[...]ED26
   [N][ C ][T][L][     data     ]
   ```
-- Some packets just carry the byte "01", they are probably acknowledgement (ACK) packets.
+- Some packets just carry the byte "01", they are probably
+  acknowledgement (ACK) packets.
 
-This can be verified looking at the code of the functions `recv_*` and `send_*` which we will dissect later. Moreover, for each client, the "packet counter" is stored at "key + 3", which is loaded from the "XXXX" parts of the file `keys.db`.
+This can be verified looking at the code of the functions `recv_*` and
+`send_*` which we will dissect later. Moreover, for each client, the
+"packet counter" is stored at `key + 3`, which is loaded from the
+"XXXX" parts of the file `keys.db`.
 
 
 #### Elliptic Curve Diffie-Hellman (ECDH) key agreement
 
-The first exchanged messages consist in a basic Elliptic Curve Diffie-Hellman (ECDH) key agreement. To sum up:
-- The server generates a private/public key pair (functions `gen_keypair` and `retrieve_pub_server`)
-- The server sends its public key and waits for an ACK from the client (functions `send_pub` and `recv_ack`)
-- The client sends back its public key to the server, the server replies with an ACK (functions `recv_pub` and `send_ack`)
-- Both derive the same shared secret: the server derives the secret from its private key and the public key of the client, and the client derives it from its private key and the public key of the server (server-side functions `retrieve_pub_client` and `derive_skey`).
-- They both derive the same AES key to exchange encrypted messages (function `derive_skey`).
+The first exchanged messages consist in a basic Elliptic Curve
+Diffie-Hellman (ECDH) key agreement. To sum up:
+- The server generates a private/public key pair (functions
+  `gen_keypair` and `retrieve_pub_server`)
+- The server sends its public key and waits for an ACK from the client
+  (functions `send_pub` and `recv_ack`)
+- The client sends back its public key to the server, the server
+  replies with an ACK (functions `recv_pub` and `send_ack`)
+- Both derive the same shared secret: the server derives the secret
+  from its private key and the public key of the client, and the
+  client derives it from its private key and the public key of the
+  server (server-side functions `retrieve_pub_client` and
+  `derive_skey`).
+- They both derive the same AES key to exchange encrypted messages
+  (function `derive_skey`).
 
-If we look at the code of the function `gen_keypair` called at the beginning, we can know that the elliptic curve used is `SECP256R1`, also known as `prime256v1`, which corresponds to `nid = 415` in `EVP_PKEY_CTX_set_ec_paramgen_curve_nid`. (https://source.chromium.org/chromium/chromium/src/+/main:third_party/boringssl/src/include/openssl/nid.h)
+If we look at the code of the function `gen_keypair` called at the
+beginning, we can know that the elliptic curve used is `SECP256R1`,
+also known as `prime256v1`, which corresponds to `nid = 415` in
+`EVP_PKEY_CTX_set_ec_paramgen_curve_nid`. (https://source.chromium.org/chromium/chromium/src/+/main:third_party/boringssl/src/include/openssl/nid.h)
 
 ```c
 v4 = EVP_PKEY_CTX_new_id(408LL, 0LL);
@@ -355,9 +392,20 @@ __int8 __fastcall derive_skey(__int64 id_server, __int64 pub_client, void **a3)
 
 #### Encrypted messages
 
-After the key agreement phase, both parts send messages encrypted with AES-GCM using the shared key. AES-GCM (Galois/Counter mode) is an operation mode with authentication: the encryption takes as input a random nonce, the plain message and public authentication data (AD). It returns the ciphertext along with a *tag* which depends on the ciphertext, the AD and the key. On decryption, the tag is checked with respect to ciphertext and AD and an error is triggered if it isn't the case: it means that AD or ciphertext has been tampered with. It theoretically guarantees the integrity of authentication data, since a man-in-the-middle attacker who does not know the key cannot forge a valid tag for corrupted AD or ciphertext.
+After the key agreement phase, both parts send messages encrypted with
+AES-GCM using the shared key. AES-GCM (Galois/Counter mode) is an
+operation mode with authentication: the encryption takes as input a
+random nonce, the plain message and public authentication data
+(AD). It returns the ciphertext along with a *tag* which depends on
+the ciphertext, the AD and the key. On decryption, the tag is checked
+with respect to ciphertext and AD and an error is triggered if it
+isn't the case: it means that AD or ciphertext has been tampered
+with. It theoretically guarantees the integrity of authentication
+data, since a man-in-the-middle attacker who does not know the key
+cannot forge a valid tag for corrupted AD or ciphertext.
 
-The encrypted packets are formatted a bit differently: instead of the length and the data, we have:
+The encrypted packets are formatted a bit differently: instead of the
+length and the data, we have:
 - the nonce used for encryption
 - the authentication tag
 - the length of the ciphertext
@@ -378,7 +426,9 @@ If we take a look at the function that sends encrypted messages, we can figure o
     && (unsigned __int8)aes_encrypt(key + 8, packet + 5, (unsigned __int8 *)ptr, aes) == 1 )
 ```
 
-The counter, stored at `&packet + 2`, is copied into a new location `ptr`, and used as authentication data in `aes_encrypt` (first `EVP_EncryptUpdate`):
+The counter, stored at `&packet + 2`, is copied into a new location
+`ptr`, and used as authentication data in `aes_encrypt` (first
+`EVP_EncryptUpdate`):
 
 ```
 __int64 __fastcall aes_encrypt(__int64 skey, unsigned __int8 *a2, unsigned __int8 *a3, void **a4)
@@ -419,18 +469,29 @@ __int64 __fastcall aes_encrypt(__int64 skey, unsigned __int8 *a2, unsigned __int
 
 #### Establishment of the communication channel
 
-After sharing the AES key, the communication channel is established as follows:
-- The server sends the message "HELOEHLO" (sic), the client replies with an ACK (functions `send_heloehlo` and `recv_ack`)
-- The client sends back any encrypted message with a valid tag, the server replies with an ACK (functions `recv_msg` and `send_ack`).
-- If the server-side decryption succeeds, the first flag is sent to the client (encrypted).
+After sharing the AES key, the communication channel is established as
+follows:
+- The server sends the message "HELOEHLO" (sic), the client replies
+  with an ACK (functions `send_heloehlo` and `recv_ack`)
+- The client sends back any encrypted message with a valid tag
+  (function `recv_msg` ).
+- If server-side decryption succeeds, the server replies with an ACK
+  and the first flag is sent to the client (encrypted).
 
-From now it is quite straightforward to get the flag of the first part: the goal is to implement a PTSD client.
+From now it is quite straightforward to get the flag of the first
+part: the goal is to implement a PTSD client.
 
 #### The flag!
 
-I implemented my client in Python + pwntools, with the libraries `ec` and `AESGCM` from `cryptography.hazmat.primitives` to work with elliptic curves and AES-GCM encryption.
+I implemented my client in Python + pwntools, with the libraries `ec`
+and `AESGCM` from `cryptography.hazmat.primitives` to work with
+elliptic curves and AES-GCM encryption.
 
-It just consists in following the protocol: here is the main part of my script. The full script is available [here](src/exploit_part1.py). The functions `send_msg` and `recv_msg` respectively send and receive encrypted messages with the provided AES key.
+It just consists in following the protocol: here is the main part of
+my script. The full script is available
+[here](src/exploit_part1.py). The functions `send_msg` and `recv_msg`
+respectively send and receive encrypted messages with the provided AES
+key.
 
 ```python
 io = start()        
@@ -474,25 +535,36 @@ recv_msg(io, aes_key, 9) # flag 1
 io.close()
 ```
 
-**FLAG:** `FCSC{13c68c00895af039603fdaeefe36e3c5c4d6a40e76a256193c24391fa76f92d7}`
+**FLAG:**
+`FCSC{13c68c00895af039603fdaeefe36e3c5c4d6a40e76a256193c24391fa76f92d7}`
 
 ## Second part: PTSD - Encore une fois (PTSD - One more time)
 
 ![challenge](./img/chall2.png)
 
-**Description (in French):**
-Pendant que vous étiez en train de confectionner votre client, le commanditaire vous envoie les traces de l'initialisation et au-delà du client n°5 (`records.txt`).
-Votre chef de projet vous propose de rechercher une vulnérabilité dans le protocole. Vous mettez en place une attaque de l'homme du milieu pour vous faire passer pour le client n°5.
-Votre objectif est donc de vous faire passer pour ce client en envoyant ses informations au serveur. Attention, le temps de réponse du client n°5 est de 10 secondes.
+**Description (in French):** Pendant que vous étiez en train de
+confectionner votre client, le commanditaire vous envoie les traces de
+l'initialisation et au-delà du client n°5 (`records.txt`).  Votre chef
+de projet vous propose de rechercher une vulnérabilité dans le
+protocole. Vous mettez en place une attaque de l'homme du milieu pour
+vous faire passer pour le client n°5.  Votre objectif est donc de vous
+faire passer pour ce client en envoyant ses informations au
+serveur. Attention, le temps de réponse du client n°5 est de 10
+secondes.
 
-**Approximate translation:**
-While you were developing your client, the sponsor sends you a log of the initialization of the client 5, as well as a few following packets (`records.txt`).
-Your boss suggests you to find a vulnerability in the protocol. You set up a man-in-the-middle attack to impersonate the client number 5.
-Your goal is to impersonate this client by sending their information to the server. Warning, the response delay of client 5 is 10 seconds.
+**Approximate translation:** While you were developing your client,
+the sponsor sends you a log of the initialization of the client 5, as
+well as a few following packets (`records.txt`).  Your boss suggests
+you to find a vulnerability in the protocol. You set up a
+man-in-the-middle attack to impersonate the client number 5.  Your
+goal is to impersonate this client by sending their information to the
+server. Warning, the response delay of client 5 is 10 seconds.
 
 ### Status 4 - Checking clients health
 
-After establishing successfully the communication channels, the function `init_channels` (status 3) returns 4. Thus, the server gets forward to status 4: checking clients health.
+After establishing successfully the communication channels, the
+function `init_channels` (status 3) returns 4. Thus, the server gets
+forward to status 4: checking clients health.
 
 ```c
 __int64 __fastcall get_health(__int64 a1, int a2)
@@ -533,9 +605,24 @@ LABEL_12:
 }
 ```
 
-During this phase, for each registered client, the server sends the encrypted message "PULLPULL" (function `send_pullpull`) and waits for the client to send back an encrypted ACK (namely, an encrypted message containing the byte "01"). After checking each clients' health, the server resumes to status 5. 
+During this phase, for each registered client, the server sends the
+encrypted message "PULLPULL" (function `send_pullpull`) and waits for
+the client to send back an encrypted ACK (namely, an encrypted message
+containing the byte "01"). After checking each clients' health, the
+server resumes to status 5.
 
-When the server receives a packet, it checks that the value of the packet counter in the packet is greater than the current server-side counter value. Since the packet counter of the client 5 is equal to 0x40 according to `keys.db`, we cannot simply send back the logged packets from `records.txt`, because their packet counter is lower. This should in theory prevent replay attacks. 
+What prevents us from answering to client 5 health check is that we do
+not know the AES key for client 5. Indeed, we cannot respond to the
+server with valid encrypted messages. We can check for classical
+crypto vulnerabilities, such as a nonce reuse, but this direction do
+not leads anywhere.
+
+In addition, when the server receives a packet, it checks that the
+value of the packet counter in the packet is greater than the current
+server-side counter value. Since the packet counter of the client 5 is
+equal to 0x40 according to `keys.db`, we cannot simply send back the
+logged packets from `records.txt`, because their packet counter is
+lower. This should in theory prevent replay attacks.
 
 ```c
 if ( *(_WORD *)(key + 3) < *((_WORD *)packet + 1) )
@@ -545,22 +632,44 @@ if ( *(_WORD *)(key + 3) < *((_WORD *)packet + 1) )
 }
 ```
 
-However, there is no upper bound on the counter received from the client, and the counter is updated to the value sent by the client. For example, if the current server-side counter is 42,
-- If the client sends a packet with counter value 41, the reception fails
-- If the client sends a packet with counter value 43, the reception succeeds and the new counter value is 43 
-- If the client sends a packet with counter value 666, the reception succeeds and the new counter value is 666
+However, there is no upper bound on the counter received from the
+client, and the counter is updated to the value sent by the
+client. For example, if the current server-side counter is 42,
+- If the client sends a packet with counter value 41, the reception
+  fails
+- If the client sends a packet with counter value 43, the reception
+  succeeds and the new counter value is 43
+- If the client sends a packet with counter value 666, the reception
+  succeeds and the new counter value is 666
 
-Moreover, when the server sends a message, it simply increments the current counter value (which is stored on 2 bytes). The server never performs any checks for integer overflow. Thus, if we send a packet with counter value FFFF, the next counter value from the server will be 0000! As a result, we will be able to replay intercepted packets since their counter value are obviously greater than 0.
+Moreover, when the server sends a message, it simply increments the
+current counter value (which is stored on 2 bytes). The server never
+performs any checks for integer overflow. Thus, if we send a packet
+with counter value FFFF, the next counter value from the server will
+be 0000! As a result, we will be able to replay intercepted packets
+since their counter value are obviously greater than 0. Thus, we can
+bypass authentication from AES-GCM and impersonate client 5.
 
-Last but not least, if the decryption of the received ACK fails (`recv_encrypted_ack` returns a value not equal to 1), the server do not stop, but instead the status remains equal to 4 and the phase "Getting health clients" is executed again. As a result, we can reply with invalid messages, the server will keep sending us "PULLPULL" messages.
+Last but not least, if the decryption of the received ACK fails
+(`recv_encrypted_ack` returns a value not equal to 1), the server do
+not stop, but instead the status remains equal to 4 and the phase
+"Getting health clients" is executed again. As a result, we can reply
+with invalid messages, the server will keep sending us "PULLPULL"
+messages.
 
 The attack scenario will then be the following:
 - We receive a PULLPULL message from the server, we ignore it
-- We send an ACK with a dummy nonce/tag and with counter value FFFF. The decryption will fail, but the server will continue sending packets...
+- We send an ACK with a dummy nonce/tag and with counter value
+  FFFF. The decryption will fail, but the server will continue sending
+  packets...
 - The server sends a PULLPULL message with a counter equal to 0000
-- We send back the first intercepted packet: `05000C036C4D63FC7F5FE25094D84F86157D7F1783EEAD297538B97C9F1C31BC0194`. We managed to impersonate client 5.
+- We send back the first intercepted packet:
+  `05000C036C4D63FC7F5FE25094D84F86157D7F1783EEAD297538B97C9F1C31BC0194`. We
+  managed to impersonate client 5.
 
-Finally, we must not forget to answer the health check as client 6 too, since the server iterates on all the clients. This is not a problem since we know the AES key for client 6.
+Finally, we must not forget to answer the health check as client 6
+too, since the server iterates on all the clients. This is not a
+problem since we know the AES key for client 6.
 
 ### Status 5 - Getting clients info
 
@@ -634,15 +743,31 @@ LABEL_27:
 ```
 
 In this last phase, for each registered client:
-- The server sends the (encrypted) bytes `\xce\xfa\x10`, the client answers with an encrypted ACK (functions `send_0xface` and `recv_encrypted_ack`)
-- The client sends back an encrypted message such that the plaintext only contains even bytes (why not?). If decryption succeeds and the client message indeed contains only even bytes (functions `recv_even` and `send_encrypted_ack`), the server replies with an encrypted ACK. Otherwise, it gets to status 6, which just prints the messages "Event raised: system under attacks" and "Action: active protection measures activated 'pew pew pew'" :-)
+- The server sends the (encrypted) bytes `\xce\xfa\x10`, the client
+  answers with an encrypted ACK (functions `send_0xface` and
+  `recv_encrypted_ack`)
+- The client sends back an encrypted message such that the plaintext
+  only contains even bytes (why not?). If decryption succeeds and the
+  client message indeed contains only even bytes (functions
+  `recv_even` and `send_encrypted_ack`), the server replies with an
+  encrypted ACK. Otherwise, it gets to status 6, which just prints the
+  messages "Event raised: system under attacks" and "Action: active
+  protection measures activated 'pew pew pew'" :-)
 - Finally, the server sends the second flag to the client
 
-The attack can be continued straightforwardly since we have successfully tampered with the packet counter: in `records.txt`, we have all the packets exchanged with client 5 up to the moment the second flag was sent.
+The attack can be continued straightforwardly since we have
+successfully tampered with the packet counter: in `records.txt`, we
+have all the packets exchanged with client 5 up to the moment the
+second flag was sent.
 
-*But... the flag will be sent encrypted with AES key for client 5... how do I do...*
+*But... the flag will be sent encrypted with AES key for client
+5... how do I do...*
 
-It is not a problem: after successfully getting info for client 5, the server will get info for client 6. We can send back encrypted ACKs and even bytes without any difficulty since we know the AES key for client 6. And finally, the flag will be sent encrypted with the key for client 6. It's a win!
+It is not a problem: after successfully getting info for client 5, the
+server will get info for client 6. We can send back encrypted ACKs and
+even bytes without any difficulty since we know the AES key for
+client 6. And finally, the flag will be sent encrypted with the key
+for client 6. It's a win!
 
 The second part of the script (full script available [here](src/exploit_part2.py)):
 ```python
@@ -673,4 +798,5 @@ recv_ack(io)
 recv_msg(io, aes_key, 17) # flag 2
 ```
 
-**FLAG:** `FCSC{e22bf8e131d553b7c80a2358f2d52b424d6b349581c893f6904806fe5b379ed6}`
+**FLAG:**
+`FCSC{e22bf8e131d553b7c80a2358f2d52b424d6b349581c893f6904806fe5b379ed6}`
