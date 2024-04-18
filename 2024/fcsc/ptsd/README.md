@@ -606,22 +606,25 @@ LABEL_12:
 ```
 
 During this phase, for each registered client, the server sends the
-encrypted message "PULLPULL" (function `send_pullpull`) and waits for
-the client to send back an encrypted ACK (namely, an encrypted message
-containing the byte "01"). After checking each clients' health, the
-server resumes to status 5.
+encrypted message "PULLPULL" (function `send_pullpull`) and waits up
+to 10 seconds for the client to send back an encrypted ACK (namely, an
+encrypted message containing the byte "01"). After checking each
+clients' health, the server resumes to status 5.
 
 What prevents us from answering to client 5 health check is that we do
 not know the AES key for client 5. Indeed, we cannot respond to the
 server with valid encrypted messages. We can check for classical
 crypto vulnerabilities, such as a nonce reuse, but this direction do
-not leads anywhere.
+not leads anywhere here. However, the description states "Your goal is
+to impersonate this client by sending their information to the
+server." This clearly suggests us to set up a *replay attack* with the
+intercepted packets.
 
-In addition, when the server receives a packet, it checks that the
-value of the packet counter in the packet is greater than the current
-server-side counter value. Since the packet counter of the client 5 is
-equal to 0x40 according to `keys.db`, we cannot simply send back the
-logged packets from `records.txt`, because their packet counter is
+When the server receives a packet, it checks that the value of the
+packet counter in the packet is greater than the current server-side
+counter value. Since the packet counter of the client 5 is equal to
+0x40 according to `keys.db`, we cannot simply send back the logged
+packets from `records.txt`, because their packet counter is
 lower. This should in theory prevent replay attacks.
 
 ```c
@@ -656,6 +659,8 @@ not stop, but instead the status remains equal to 4 and the phase
 "Getting health clients" is executed again. As a result, we can reply
 with invalid messages, the server will keep sending us "PULLPULL"
 messages.
+
+![meme](./img/meme.jpg)
 
 The attack scenario will then be the following:
 - We receive a PULLPULL message from the server, we ignore it
