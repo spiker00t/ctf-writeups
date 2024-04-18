@@ -3,7 +3,7 @@
 **TL;DR:** Reverse of a custom network protocol based on a Elliptic
 Curve Diffie-Hellman (ECDH) key exchange with AES-GCM encryption +
 exploitation of an integer overflow in the implementation of the
-protocol.
+protocol to impersonate a client with a replay attack.
 
 ## First part: PTSD - Init
 
@@ -62,7 +62,7 @@ SEND: 05001003A0BD2E66B65B053DC12AE07667FC6BF930A54279F487FF29438ADE2F01F7
 - the remote binary `server`.
 
 When we run the binary, the server performs some internal operations,
-sends us a packet, and wait for an answer. 
+sends us a packet, and waits for an answer. 
 ```
 INFO -- release -- --- PTSD Server v1.54 ---
 INFO -- release -- Loading clients...
@@ -609,7 +609,7 @@ During this phase, for each registered client, the server sends the
 encrypted message "PULLPULL" (function `send_pullpull`) and waits up
 to 10 seconds for the client to send back an encrypted ACK (namely, an
 encrypted message containing the byte "01"). After checking each
-clients' health, the server resumes to status 5.
+client's health, the server resumes to status 5.
 
 What prevents us from answering to client 5 health check is that we do
 not know the AES key for client 5. Indeed, we cannot respond to the
@@ -617,7 +617,7 @@ server with valid encrypted messages. We can check for classical
 crypto vulnerabilities, such as a nonce reuse, but this direction do
 not leads anywhere here. However, the description states "Your goal is
 to impersonate this client by sending their information to the
-server." This clearly suggests us to set up a *replay attack* with the
+server." This clearly suggests us to set up a *[replay attack](https://en.wikipedia.org/wiki/Replay_attack)* with the
 intercepted packets.
 
 When the server receives a packet, it checks that the value of the
