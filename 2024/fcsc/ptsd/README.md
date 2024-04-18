@@ -62,14 +62,14 @@ SEND: 05001003A0BD2E66B65B053DC12AE07667FC6BF930A54279F487FF29438ADE2F01F7
 - the remote binary `server`.
 
 When we run the binary, the server performs some internal operations,
-sends us a packet, and wait for an answer.  ``` [rlaspina@ARCH-RLS
-ptsd] $ ./server INFO -- release -- --- PTSD Server v1.54 --- INFO --
-release -- Loading clients...  INFO -- release -- Initializing secure
-channels...  INFO -- release -- Secure channel already done for 5
-SEND:
-060001044104F7D2F1CCFBF6ACA90E0168F0B45DFE275DC54D0919A2007E1CE32674C2620EB73F0821E05FF3D6AA97FC0049FDD2CA7C7F0F6BDA2BA77FE528B4D4600D8A6A5F
+sends us a packet, and wait for an answer. 
+```
+INFO -- release -- --- PTSD Server v1.54 ---
+INFO -- release -- Loading clients...
+INFO -- release -- Initializing secure channels...
+INFO -- release -- Secure channel already done for 5
+SEND: 06000104410498125B036A337AB3EE6DAC6FDE487C00546281FE65605298CCF41F1873E690C30B8A79C63C0F5EE3D359AA306D6DFCBB7D461C4584B3A3A4ADD0BAC9E4522B61
 RECV:
-
 ```
 
 Let's dive in the code of the binary to understand what happens.
@@ -430,7 +430,7 @@ The counter, stored at `&packet + 2`, is copied into a new location
 `ptr`, and used as authentication data in `aes_encrypt` (first
 `EVP_EncryptUpdate`):
 
-```
+```c
 __int64 __fastcall aes_encrypt(__int64 skey, unsigned __int8 *a2, unsigned __int8 *a3, void **a4)
 {
     [...]
@@ -678,7 +678,7 @@ problem since we know the AES key for client 6.
 
 ### Status 5 - Getting clients info
 
-```
+```c
 __int64 __fastcall get_info(__int64 a1, int a2)
 {
   unsigned int v3; // [rsp+18h] [rbp-28h]
