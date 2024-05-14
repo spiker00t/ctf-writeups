@@ -19,25 +19,26 @@ Pourrez-vous trouver la porte dérobée et analyser son fonctionnement ?
 
 **Approximate translation:** The new junior dev who maintains the
 website of the archery club does nothing since he came back from
-holidays on Wednesday... He reset his computer saying that doing so
+holidays on Wednesday... He reseted his computer saying that doing so
 will make it more productive and super secure, but in the meantime, he
-only edit configurations and do nothing else. Moreover, he didn't even
-configure the screen locking! We figured out that because somebody
-apparently took advantage of its lunch break to [prank him](https://github.com/AlexisGerard98/AlexisGerard98/tree/b67a78189b89be29390ddd0197878905adeebeec). He says
-that it's more serious and that someone installed a backdoor on his
-PC... He talks about a `sudo` session still active, deleted logs or I
-don't know what... At the point that the worried CISO captured an
-image of his hard disk.  Could you find the backdoor and analyze how
-it works?
+only edits configurations and do nothing else. Moreover, he didn't
+even configure the screen locking! We figured out that because
+somebody apparently took advantage of his lunch break to [prank
+him](https://github.com/AlexisGerard98/AlexisGerard98/tree/b67a78189b89be29390ddd0197878905adeebeec). He
+says that it's more serious than that and that someone installed a
+backdoor on his PC... He talks about a `sudo` session still active,
+deleted logs or I don't know what... At the point that the worried
+CISO captured an image of his hard disk.  Could you find the backdoor
+and analyze how it works?
 
 ## Introduction
 
 We are given a 8GB archive, `AlexisLaptop.7z`. This archive contains:
 - 16 files `AlexisLaptop.s01`, `AlexisLaptop.s02`, `AlexisLaptop.s03`, ..., `AlexisLaptop.s16`, 512MB each, which contains parts of the disk image
 ```
-[rlaspina@ARCH-RLS mnt] $ file AlexisLaptop.s01
+$ file AlexisLaptop.s01
 AlexisLaptop.s01: EWF/Expert Witness/EnCase image file format
-[rlaspina@ARCH-RLS mnt] $ file AlexisLaptop.s02
+$ file AlexisLaptop.s02
 AlexisLaptop.s02: EWF/Expert Witness/EnCase image file format
 ```
 - a text file `AlexisLaptop.s01.txt` which gives additional info on the image (mostly useless)
@@ -52,7 +53,7 @@ We have to deal with parts of images under the EWF image format.
 
 I used the tool `ewfexport` to export the 16 parts to a single raw file.
 ```
-[rlaspina@ARCH-RLS mnt] $ ewfexport AlexisLaptop.s01
+$ ewfexport AlexisLaptop.s01
 ewfexport 20140608
 
 Information for export required, please provide the necessary input
@@ -77,9 +78,9 @@ ewfexport: SUCCESS
 The next step is to identify the structure/partition layout of the disk.
 
 ```
-[rlaspina@ARCH-RLS mnt] $ file AlexisLaptop.raw
+$ file AlexisLaptop.raw
 AlexisLaptop.raw: DOS/MBR boot sector; partition 1 : ID=0xee, start-CHS (0x0,0,2), end-CHS (0x3ff,255,63), startsector 1, 16777215 sectors, extended partition table (last)
-[rlaspina@ARCH-RLS mnt] $ fdisk -l AlexisLaptop.raw
+$ fdisk -l AlexisLaptop.raw
 Disk AlexisLaptop.raw: 8 GiB, 8589934592 bytes, 16777216 sectors
 Units: sectors of 1 * 512 = 512 bytes
 Sector size (logical/physical): 512 bytes / 512 bytes
@@ -102,7 +103,7 @@ sudo losetup -fP AlexisLaptop.raw
 But if we attempt to mount the loop partition just created, we have a problem:
 
 ```
-[rlaspina@ARCH-RLS mnt] $ sudo mount /dev/loop0p2 mntpoint
+$ sudo mount /dev/loop0p2 mntpoint
 mount: /mnt/mntpoint: unknown filesystem type 'crypto_LUKS'.
        dmesg(1) may have more information after failed mount system call.
 ```
@@ -112,12 +113,13 @@ care at least a little about security. :-)
 
 But... remember the screenshot, the passphrase for LUKS encryption is
 all given!
+(`dflnrftl-dghdcdcc-uljjvtdi-grrvdnne-lveeegci-bclknhtf-jgrikeui-glfbdfru`)
 
 The tool `cryptsetup` allows us to setup a new device with the
 decrypted data.
 
 ```
-[rlaspina@ARCH-RLS mnt] $ sudo cryptsetup luksOpen /dev/loop0p2 mydata
+$ sudo cryptsetup luksOpen /dev/loop0p2 mydata
 WARNING:esys:src/tss2-esys/api/Esys_Load.c:324:Esys_Load_Finish() Received TPM Error
 ERROR:esys:src/tss2-esys/api/Esys_Load.c:112:Esys_Load() Esys Finish ErrorCode (0x000001df)
 Failed to unseal secret using TPM2: State not recoverable
@@ -126,7 +128,7 @@ Enter passphrase for /dev/loop0p2: <ENTER PASSPHRASE HERE>
 
 And finally,
 ```
-[rlaspina@ARCH-RLS mnt] $ sudo mount /dev/mapper/mydata mntpoint/
+$ sudo mount /dev/mapper/mydata mntpoint/
 ```
 
 We then have access to the hard disk data in `mntpoint`. We can start the challenge!
@@ -241,13 +243,14 @@ Can we find back the package somewhere? Looking at the root directory
 
 If we look carefully at the pacman logs, we can see that there is a
 hook `00-timeshift-autosnap.hook` that runs Timeshift each time a
-package is upgraded. It's a common strategy for Arch users to have a
-snapshot to revert in case something breaks after an update.  When the
-malicious package was installed, the package `pam` seems to have been
-updated and thus a snapshot was made.
+package is upgraded. It's a common strategy for Arch users to keep a
+snapshot in case something breaks after an update. When the malicious
+package was installed, the package `pam` seems to have been updated
+and thus a snapshot was made.
 
 That's very good news, since the snapshot was captured just after
-installation, the package should still be present!
+installation, the package should still be present somewhere in the
+filesystem!
 
 Indeed, in `timeshift-btrfs`, there is a snapshot from February 21st
 1:45PM. Thanks to this snapshot, we can indeed find the package in the
@@ -268,9 +271,9 @@ libraries to the ones of those previously installed, they are all
 identical, except one.
 
 ```
-[rlaspina@ARCH-RLS root] $ sha1sum ../usr/lib/security/pam_unix.so
+$ sha1sum ../usr/lib/security/pam_unix.so
 4990da64c0761bda87db6b77cc632f5eec34f650  ../usr/lib/security/pam_unix.so
-[rlaspina@ARCH-RLS root] $ sha1sum usr/lib/security/pam_unix.so
+$ sha1sum usr/lib/security/pam_unix.so
 0974416320a0538b3591b75ad9996c49f2efdef2  usr/lib/security/pam_unix.so
 ```
 
