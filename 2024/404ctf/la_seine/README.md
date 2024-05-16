@@ -220,12 +220,14 @@ To recap, we have knowledge of
 - $C = a^2 + b^2$.
 
 Moreover, we have the following equations:
-$$\begin{cases}
+```math
+\begin{cases}
 ax_0 + by_0 = x_1\\\
 bx_0 - ay_0 = y_1\\\
 a^2 + b^2 = C\\\
 x_0^2 + y_0^2 = S_0
-\end{cases}$$
+\end{cases}
+```
 
 My first intuition was: it's 4 equations with 4 unknowns ($x_0$,
 $y_0$, $a$ and $b$), they should be solvable.
