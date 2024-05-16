@@ -106,10 +106,12 @@ Let $x_0,\ldots,x_k$ and $y_0,\ldots,y_k$ the successive values of $x$
 and $y$ through the iterations. We have $x_0 = x_m$, $y_0 = y_m$, $x_k = x_s$ and $y_k = y_s$
 
 Their values can be described by the following recurrence relations:
-$$\begin{cases}
-x_{n+1} = ax_n + by_n \mod p\\\
+```math
+\begin{cases}
+x_{n+1} = ax_n + by_n \mod p\\
 y_{n+1} = bx_n - ay_n \mod p
-\end{cases}$$
+\end{cases}
+```
 
 In the algorithm, all the operations are done modulo $p$ (in the
 finite field $\mathbb{Z}/p\mathbb{Z}$). Thus, for the sake of
@@ -118,24 +120,26 @@ ambiguity.
 
 We can straightforwardly rewrite these recurrence relations in terms
 of matrices. 
-
-Let $X_n = \begin{pmatrix} x_n \\\ y_n \end{pmatrix}$ and $A = \begin{pmatrix} a &
-b\\\b & -a \end{pmatrix}$.
+ 
+```math
+`text{Let } X_n = \begin{pmatrix} x_n \\ y_n \end{pmatrix} \text{ and } A = \begin{pmatrix} a & b \\ b & -a \end{pmatrix}
+```
 
 Then we have for all $n \in [|0,k-1|]$, $X_{n+1} = AX_n$. By a trivial recurrence, we finally have, for all $n\in [|0,k|]$, $X_n = A^nX_0$.
 
-Moreover, we can remark that $A^2 = \begin{pmatrix} a^2 + b^2 & 0 \\\ 0
-& a^2 + b^2 \end{pmatrix} = (a^2 + b^2)I_2$ where $I_2$ is the
+Moreover, we can remark that $A^2 = (a^2 + b^2)I_2$ where $I_2$ is the
 identity matrix.
 
 As a result, if $k = 2k'$ is even,
 $$X_k = A^{2k'}X_0 = (A^2)^{k'}X_0 = (a^2 + b^2)^{k'}X_0$$
 
 and finally,
-$$\begin{cases}
-x_s = (a^2 + b^2)^{k'}x_m\\\
+```math
+\begin{cases}
+x_s = (a^2 + b^2)^{k'}x_m\\
 y_s = (a^2 + b^2)^{k'}y_m
-\end{cases}$$
+\end{cases}
+```
 
 Since the known message has been signed with a known even $k$, we can
 immediately recover the value of $(a^2 + b^2)$ from $x_s$ and $x_m$:
@@ -171,20 +175,27 @@ allows us to avoid bruteforcing both $k$, $a$ and $b$ at the same
 time.
 
 We can first solve the equation system with unknowns $a$ and $b$ given $x_n$,$y_n$,$x_{n+1}$ and $y_{n+1}$:
-$$\begin{cases}
-x_{n+1} = ax_n + by_n \mod p\\\
+```math
+\begin{cases}
+x_{n+1} = ax_n + by_n \mod p\\
 y_{n+1} = bx_n - ay_n \mod p
-\end{cases}$$
-$$\begin{cases}
-x_nx_{n+1}-y_ny_{n+1} = a(x_n^2+y_n^2)\\\
+\end{cases}
+```
+
+```math
+\begin{cases}
+x_nx_{n+1}-y_ny_{n+1} = a(x_n^2+y_n^2)\\
 y_nx_{n+1}+x_ny_{n+1} = b(x_n^2+y_n^2)
-\end{cases}$$
+\end{cases}
+```
 
 Hence,
-$$\begin{cases}
-a = \dfrac{x_nx_{n+1}-y_ny_{n+1}}{x_n^2+y_n^2}\\\
+```math
+\begin{cases}
+a = \dfrac{x_nx_{n+1}-y_ny_{n+1}}{x_n^2+y_n^2}\\
 b = \dfrac{y_nx_{n+1}+x_ny_{n+1}}{x_n^2+y_n^2}
-\end{cases}$$
+\end{cases}
+```
 
 And finally, playing with the remarkable identities,
 $$C = \dfrac{(x_nx_{n+1}-y_ny_{n+1})^2 + (y_nx_{n+1}+x_ny_{n+1})^2}{(x_n^2+y_n^2)^2}$$
@@ -302,10 +313,12 @@ and $b$, let's get back to our problem.
 We can remark that $A^{-1} = \dfrac{1}{C}A$ thus $X_0 = \dfrac{1}{C}AX_1$.
 
 And finally, 
-$$\begin{cases}
+```math
+\begin{cases}
 x_{0} = \dfrac{a}{C}x_1 + \dfrac{b}{C}y_1 \mod p\\
 y_{0} = \dfrac{b}{C}x_1 - \dfrac{a}{C}y_1 \mod p
-\end{cases}$$
+\end{cases}
+```
 
 Given $a$ and $b$, we have formulas to get back $x_0$ and $y_0$ from
 $x_1$ and $y_1$. We can finally try our 64 candidates until we obtain
