@@ -120,9 +120,15 @@ ambiguity.
 
 We can straightforwardly rewrite these recurrence relations in terms
 of matrices. 
- 
+
+Let 
 ```math
-`text{Let } X_n = \begin{pmatrix} x_n \\ y_n \end{pmatrix} \text{ and } A = \begin{pmatrix} a & b \\ b & -a \end{pmatrix}
+X_n = \begin{pmatrix} x_n \\ y_n \end{pmatrix}
+```
+
+and 
+```math
+A = \begin{pmatrix} a & b \\ b & -a \end{pmatrix}
 ```
 
 Then we have for all $n \in [|0,k-1|]$, $X_{n+1} = AX_n$. By a trivial recurrence, we finally have, for all $n\in [|0,k|]$, $X_n = A^nX_0$.
@@ -221,7 +227,7 @@ at most about a million values to test. Easy peasy.
 The number of needed iterations to reach the "smallest" value is
 exactly $k$. At the same time, we get back
 - the value of $x_0^2 + y_0^2 = \dfrac{1}{C^k}(x_s^2+y_s^2)$. We will denote this constant by $S_0$.
-- the values of $x_1 = \dfrac{1}{C^{\floor{\frac{k}{2}}}}x_s$ and $y_1 = \dfrac{1}{C^{\floor{\frac{k}{2}}}}y_s$
+- the values of $x_1 = \dfrac{1}{C^{\lfloor\frac{k}{2}\rfloor}}x_s$ and $y_1 = \dfrac{1}{C^{\lfloor\frac{k}{2}\rfloor}}y_s$
 
 ### Recovering the Flag - Failed Attempt
 
@@ -436,6 +442,8 @@ for (a,b) in a_b_cands:
 
 print("[+] FLAG: %s" % (bytes.fromhex(hex(xf)[2:]) + bytes.fromhex(hex(yf)[2:])))
 ```
+
+**FLAG:** `404CTF{F4u7_p4S_80iR3_l4_t4ss3...}`
 
 ## Conclusion
 
