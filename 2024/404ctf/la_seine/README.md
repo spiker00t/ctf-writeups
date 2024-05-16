@@ -107,7 +107,7 @@ and $y$ through the iterations. We have $x_0 = x_m$, $y_0 = y_m$, $x_k = x_s$ an
 
 Their values can be described by the following recurrence relations:
 $$\begin{cases}
-x_{n+1} = ax_n + by_n \mod p\\
+x_{n+1} = ax_n + by_n \mod p\\\
 y_{n+1} = bx_n - ay_n \mod p
 \end{cases}$$
 
@@ -119,12 +119,12 @@ ambiguity.
 We can straightforwardly rewrite these recurrence relations in terms
 of matrices. 
 
-Let $X_n = \begin{pmatrix} x_n \\ y_n \end{pmatrix}$ and $A = \begin{pmatrix} a &
-b\\b & -a \end{pmatrix}$.
+Let $X_n = \begin{pmatrix} x_n \\\ y_n \end{pmatrix}$ and $A = \begin{pmatrix} a &
+b\\\b & -a \end{pmatrix}$.
 
 Then we have for all $n \in [|0,k-1|]$, $X_{n+1} = AX_n$. By a trivial recurrence, we finally have, for all $n\in [|0,k|]$, $X_n = A^nX_0$.
 
-Moreover, we can remark that $A^2 = \begin{pmatrix} a^2 + b^2 & 0 \\ 0
+Moreover, we can remark that $A^2 = \begin{pmatrix} a^2 + b^2 & 0 \\\ 0
 & a^2 + b^2 \end{pmatrix} = (a^2 + b^2)I_2$ where $I_2$ is the
 identity matrix.
 
@@ -133,7 +133,7 @@ $$X_k = A^{2k'}X_0 = (A^2)^{k'}X_0 = (a^2 + b^2)^{k'}X_0$$
 
 and finally,
 $$\begin{cases}
-x_s = (a^2 + b^2)^{k'}x_m\\
+x_s = (a^2 + b^2)^{k'}x_m\\\
 y_s = (a^2 + b^2)^{k'}y_m
 \end{cases}$$
 
@@ -172,17 +172,17 @@ time.
 
 We can first solve the equation system with unknowns $a$ and $b$ given $x_n$,$y_n$,$x_{n+1}$ and $y_{n+1}$:
 $$\begin{cases}
-x_{n+1} = ax_n + by_n \mod p\\
+x_{n+1} = ax_n + by_n \mod p\\\
 y_{n+1} = bx_n - ay_n \mod p
 \end{cases}$$
 $$\begin{cases}
-x_nx_{n+1}-y_ny_{n+1} = a(x_n^2+y_n^2)\\
+x_nx_{n+1}-y_ny_{n+1} = a(x_n^2+y_n^2)\\\
 y_nx_{n+1}+x_ny_{n+1} = b(x_n^2+y_n^2)
 \end{cases}$$
 
 Hence,
 $$\begin{cases}
-a = \dfrac{x_nx_{n+1}-y_ny_{n+1}}{x_n^2+y_n^2}\\
+a = \dfrac{x_nx_{n+1}-y_ny_{n+1}}{x_n^2+y_n^2}\\\
 b = \dfrac{y_nx_{n+1}+x_ny_{n+1}}{x_n^2+y_n^2}
 \end{cases}$$
 
@@ -221,9 +221,9 @@ To recap, we have knowledge of
 
 Moreover, we have the following equations:
 $$\begin{cases}
-ax_0 + by_0 = x_1\\
-bx_0 - ay_0 = y_1\\
-a^2 + b^2 = C\\
+ax_0 + by_0 = x_1\\\
+bx_0 - ay_0 = y_1\\\
+a^2 + b^2 = C\\\
 x_0^2 + y_0^2 = S_0
 \end{cases}$$
 
@@ -275,8 +275,10 @@ Fermat's two-squares theorem).
 Essentially, the method is the following:
 - Factorize $C = 2^{k_0}p_1^{k_1}\ldots
   p_j^{k_j}p_{j+1}^{k_{j+1}}\ldots p_m^{k_m}$ where for all $i \in
-  [|1,j|]$, $p_i\equiv 1 [4]$ and for all $i in [|j+1,m|]$, $p_i\equiv
-  3[4]$.  $k_{j+1},\ldots,k_m$ should be even, otherwise there are no
+  [|1,j|]$, $p_i\equiv 1 [4]$ and for all $i \in [|j+1,m|]$, $p_i\equiv
+  3[4]$.
+  
+  $k_{j+1},\ldots,k_m$ should be even, otherwise there are no
   solutions.
 - Decompose separately the $p_i$ for $i \in [|1,j|]$ in sums of two
   squares $x_i^2 + y_i^2$
