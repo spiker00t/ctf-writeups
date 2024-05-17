@@ -211,7 +211,7 @@ $$C = \dfrac{x_{n+1}^2 + y_{n+1}^2}{x_n^2+y_n^2}$$
 At each iteration of the algorithm, 
 $$x_{n+1}^2 + y_{n+1}^2 = C(x_n^2+y_n^2)$$
 
-And thus, $x_m^2 + y_m^2 = \dfrac{1}{C^k}(x_s^2+y_s^2)
+And thus, $x_m^2 + y_m^2 = \dfrac{1}{C^k}(x_s^2+y_s^2)$
 
 **Little guess:** the initial value $x_m^2 + y_m^2$ is very inferior
 to $p$. Since $p$ is 1024 bit-long, it would imply that $x_m$ and
