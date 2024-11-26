@@ -2,8 +2,6 @@
 
 **TL;DR:** Franklin-Reiter related-message attack.
 
-## First part: PTSD - Init
-
 ![challenge](./img/chall.png)
 
 **Description:** Reiwa is latest era name in Japanese(from 2019). it's latest rot13 challenge!
