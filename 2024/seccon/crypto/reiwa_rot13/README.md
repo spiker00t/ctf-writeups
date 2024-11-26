@@ -74,7 +74,7 @@ The polynomial $P$ such that $ROT13(key) = P(key)$ is thus $X-d$ where there are
 
 From there, it is easy to recover the flag: we just have to decrypt it using AES with the sha256 of the recovered key. 
 
-I mainly reused this implementation of Franklin-Reiter to solve the challenge: https://github.com/ValarDragon/CTF-Crypto/blob/master/RSA/FranklinReiter.sage. Here is my final Sage solve script:
+I mainly reused [this implementation](https://github.com/ValarDragon/CTF-Crypto/blob/master/RSA/FranklinReiter.sage) of Franklin-Reiter to solve the challenge. Here is my final Sage solve script:
 
 ```sage
 import hashlib
