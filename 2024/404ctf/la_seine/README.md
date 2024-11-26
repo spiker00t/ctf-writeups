@@ -1,7 +1,7 @@
 # 404CTF 2024 - Write-Up for the challenge *La Seine* (Crypto)
 
 **TL;DR:** Custom signature algorithm, based on 2x2-matrix
-operations. Sum of two squares theorem.
+operations. Decomposition of integers in sum of two squares.
 
 ![challenge](./img/chall.png)
 
@@ -453,4 +453,4 @@ math from French preparatory classes.
 **Bonus:** The song that haunted me while I was solving the chall and
 writing this writeup. I swear,
 [this](https://www.youtube.com/watch?v=9Z-NbQvhzKM) is not a
-rickroll. https://www.youtube.com/watch?v=dQw4w9WgXcQ
+rickroll. [https://www.youtube.com/watch?v=dQw4w9WgXcQ]
