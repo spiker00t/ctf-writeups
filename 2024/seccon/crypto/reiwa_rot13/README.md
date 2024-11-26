@@ -70,9 +70,9 @@ This attack mainly consists in computing the polynomial GCD between $X^e - c1$ a
 
 Here, we do not know precisely how both messages are related: we only know that ROT13 performs a -13 or +13 operation on each character.
 
-But there are only 2 possibilities for each character, and the key is 10-char long. Thus, there are only $2^10 = 1024$ possible differences between the messages.
+But there are only 2 possibilities for each character, and the key is 10-char long. Thus, there are only $2^{10} = 1024$ possible differences between the messages.
 
-The polynomial $P$ such that $ROT13(key) = P(key)$ is thus $X-d$ where there are 1024 possible values for $d$. We can bruteforce all the possible values and try to apply Franklin-Reiter with each of them until the recovered message is lower than $256^11$: it should then correspond to the 10-char key.
+The polynomial $P$ such that $ROT13(key) = P(key)$ is thus $X-d$ where there are 1024 possible values for $d$. We can try to apply Franklin-Reiter with each of them until the recovered message is lower than $256^{11}$: it should then correspond to the 10-char key.
 
 From there, it is easy to recover the flag: we just have to decrypt it using AES with the sha256 of the recovered key. 
 
