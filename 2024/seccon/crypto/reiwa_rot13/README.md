@@ -6,7 +6,7 @@
 
 **Description:** Reiwa is latest era name in Japanese(from 2019). it's latest rot13 challenge!
 
-### Introduction
+## Introduction
 
 For this challenge, we are given an archive containing:
 - a Python script `chall.py`:
@@ -54,7 +54,7 @@ A random key made of 10 lowercase chars is encrypted using RSA and printed, as w
 
 Basically, to recover the flag, we should recover the plain key given its RSA-ciphertext and the RSA-ciphertext of its ROT13-encoding. We are also given the RSA public parameters $n$ and $e$.
 
-### The Attack
+## The Attack
 
 We can easily guess that we should exploit the fact that the key and its ROT13 encoding are quite strongly related. Moreover, the public exponent used for RSA encryption is small (137, instead of 65537 usually).
 
@@ -64,7 +64,7 @@ Franklin-Reiter attack consists in recovering a message $m$ given the ciphertext
 
 This attack mainly consists in computing the polynomial GCD between $X^e - c1$ and $P(X)^e - c2$ in the ring $\mathbb{Z}_n[X]$: indeed, $m$ is a root of both, thus $(X-m)$ is a common divisor.
 
-### Solving the Challenge
+## Solving the Challenge
 
 Here, we do not know precisely how both messages are related: we only know that ROT13 performs a -13 or +13 operation on each character.
 
