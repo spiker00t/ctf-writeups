@@ -1,7 +1,7 @@
 # Root-Xmas Challenge 2024 - Write-Ups for Days 7 to 12
 
 These challenges were part of the Root-Xmas Challenge which was
-organized by [root-me.org](Root-Me). This event was an Advent Calendar
+organized by [Root-Me](root-me.org). This event was an Advent Calendar
 made with CTF challenges.
 
 ## Day 7 - Go, Pwn, Gown (Pwn)
@@ -13,7 +13,7 @@ made with CTF challenges.
 This challenge consists in a Web app where there are two
 endpoints. The main endpoint expects a `gown` parameter, and requests
 to the `/areyou` endpoint always return `OK Annie?!` (check
-[https://www.youtube.com/watch?v=_mMyPJSx8RU](here) for more info).
+[here](https://www.youtube.com/watch?v=_mMyPJSx8RU) for more info).
 
 The server is written in Go and its source code is available. 
 ```
@@ -388,7 +388,7 @@ payload in the body.
 
 There is an exception to this rule if the Location header contains
 some special URL such as `resource://` URL: see
-[https://www.gremwell.com/firefox-xss-302](here).
+[here](https://www.gremwell.com/firefox-xss-302).
 
 Thus, by replacing `dummy` in the example with a `resource://` URL, we
 have a working XSS payload.
@@ -471,7 +471,7 @@ desktop client mRemoteNG.
 
 The passwords can be decrypted with the master key present at the
 beginning of the file, thanks to the tool
-[https://github.com/gquere/mRemoteNG_password_decrypt](mRemoteNG_password_decrypt). The
+[mRemoteNG_password_decrypt](https://github.com/gquere/mRemoteNG_password_decrypt). The
 decryption is flawless and gives us the flag:
 
 ```
@@ -500,7 +500,7 @@ Password: RM{R3m0t3_cLi3Nt_4r3_n0t_S0_s3cur3}
 
 **Description:** You dreamt it, we did it. The shop for the famous Route-Mi platform is now available. And guess what? We're offering you a €5 discount voucher, so enjoy yourself, it's on us.
 
-In this challenge, we have to deal with a parody of [https://shop.root-me.org](Root-Me Shop). 
+In this challenge, we have to deal with a parody of the [Root-Me Shop](https://shop.root-me.org). 
 
 ![challenge](./img/10-site1.png)
 ![challenge](./img/10-site2.png)
@@ -539,7 +539,7 @@ $ tree
 ```
 
 The website is written in Python and based on Flask. The interesting
-part is located in [./src/10-route-mi/app/app/routes.py](routes.py).
+part is located in [routes.py](./src/10-route-mi/app/app/routes.py).
 
 When we press the button to get a coupon, a POST request to
 `/discount` is made. Here is an extract from `routes.py`.
@@ -657,7 +657,7 @@ anywhere.
 
 ![challenge](./img/11-padoru.png)
 
-The game is based on [https://en.wikipedia.org/wiki/GLFW](GLFW), an
+The game is based on [GLFW](https://en.wikipedia.org/wiki/GLFW), an
 OpenGL library to handle windows.
 
 When looking at the decompiled `padoru.exe`, it is full of dirty C++
@@ -744,14 +744,14 @@ local_c70 = loadSpirvShaders("vertex.spv","fragment.spv");
 ```
 
 We then have to decompile the shaders. We can do that with
-[https://www.khronos.org/spir/visualizer/](Khronos). While
+[Khronos](https://www.khronos.org/spir/visualizer/). While
 `vertex.spv` contains nothing that interest us, `fragment.spv`
 contains the secret checking routine.
 
 ![challenge](./img/11-khronos.png)
 
 SPIR-V bytecode is pretty hard to human-read. The tool
-[https://shader-playground.timjones.io/](Shader Playground) allows us
+[Shader Playground](https://shader-playground.timjones.io/) allows us
 to decompile the bytecode back to HLSL syntax. We copy it to clipboard
 from Khronos, we paste it in Shader Playground.
 

@@ -1,7 +1,7 @@
 # Root-Xmas Challenge 2024 - Write-Ups for Days 1 to 6
 
 These challenges were part of the Root-Xmas Challenge which was
-organized by [root-me.org](Root-Me). This event was an Advent Calendar
+organized by [Root-Me](root-me.org). This event was an Advent Calendar
 made with CTF challenges.
 
 ## Day 1 - Generous Santa (Web)
@@ -47,7 +47,7 @@ $ tree
         └── suggest.ejs
 ```
 
-The main file [./src/01-generous/sources-generous-santa/src/app.js](app.js) is here to handle GET requests
+The main file [app.js](./src/01-generous/sources-generous-santa/src/app.js) is here to handle GET requests
 made by the user. Internal operations are then performed thanks to an
 API.
 
@@ -376,7 +376,7 @@ $ tree
 └── flag.txt
 ```
 
-The remote is a Web server in Rust. Its full source code (`main.rs`) is available here [./src/04-build_and_drustroy/day4/build-and-drustroy/src/main.rs](main.rs).
+The remote is a Web server in Rust. Its full source code (`main.rs`) is available here: [main.rs](./src/04-build_and_drustroy/day4/build-and-drustroy/src/main.rs).
 
 The most important part is the code for the endpoint `/remote-build`
 
@@ -709,7 +709,7 @@ Merry Christmas Santa! :-)
 
 We can, in return, "wrap a present" (aka. encrypt a chosen message)
 
-We are given the source code of the app [./src/06-unwrap_the_gift/app.py](app.py).
+We are given the source code of the app [app.py](./src/06-unwrap_the_gift/app.py).
 
 The interesting part is where the gifts are wrapped/unwrapped.
 
