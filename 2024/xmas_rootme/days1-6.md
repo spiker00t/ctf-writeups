@@ -212,7 +212,7 @@ exfiltration. Some ICMP packets indeed catch our attention: they
 contain some hex characters that seem to represent ASCII data.
 Moreover, ICMP messages are a common vector to exfiltrate data.
 
-(screenshot)
+![challenge](./img/02-wireshark.png)
 
 To deal more easily with these packets, we can keep only ICMP traffic
 from the pcapng using tshark. The packets used for exfiltration are
