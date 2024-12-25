@@ -500,7 +500,7 @@ Password: RM{R3m0t3_cLi3Nt_4r3_n0t_S0_s3cur3}
 
 **Description:** You dreamt it, we did it. The shop for the famous Route-Mi platform is now available. And guess what? We're offering you a €5 discount voucher, so enjoy yourself, it's on us.
 
-In this challenge, we have to deal with a parody of the [shop.root-me.org](Root-Me Shop). 
+In this challenge, we have to deal with a parody of [https://shop.root-me.org/](Root-Me Shop). 
 
 ![challenge](./img/10-site1.png)
 ![challenge](./img/10-site2.png)
