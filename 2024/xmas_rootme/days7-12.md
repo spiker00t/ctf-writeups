@@ -171,7 +171,7 @@ After all, what could go wrong?
 
 This challenge consists in a Web framework to do HTTP requests.
 
-(TODO screenshots)
+![challenge](./img/08-site.png)
 
 ```
 $ tree
@@ -539,7 +539,7 @@ $ tree
 ```
 
 The website is written in Python and based on Flask. The interesting
-part is located in `routes.py` (TODO link).
+part is located in [./src/10-route-mi/app/app/routes.py](routes.py).
 
 When we press the button to get a coupon, a POST request to
 `/discount` is made. Here is an extract from `routes.py`.
