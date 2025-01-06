@@ -8,7 +8,8 @@ made with CTF challenges.
 
 ![challenge](./img/07-chall.png)
 
-**Description:** I love golang because it's safe. But this... This scares me. I mean, comments should be comments... But sneak code is always enjoyable, isn't it?
+**Description:** 
+> I love golang because it's safe. But this... This scares me. I mean, comments should be comments... But sneak code is always enjoyable, isn't it?
 
 This challenge consists in a Web app where there are two
 endpoints. The main endpoint expects a `gown` parameter, and requests
@@ -161,13 +162,14 @@ r = requests.get("http://dyn-01.xmas.root-me.org:31161/?gown=" + encoded_payload
 
 ![challenge](./img/08-chall.png)
 
-**Description:** Since it caught a ton of vulnerabilities in its previous applications, Santa Claus no longer trusts any library.
-
-He's fed up with seeing CVEs arrive and make his application vulnerable when it's not his fault... He decided to take the initiative and stop using any libraries. He recoded a new web JS framework from scratch.
-
-He's even giving you the source code for his brand-new framework, and in any case he's counting on the community to point out any bugs!
-
-After all, what could go wrong?
+**Description:** 
+> Since it caught a ton of vulnerabilities in its previous applications, Santa Claus no longer trusts any library.
+>
+> He's fed up with seeing CVEs arrive and make his application vulnerable when it's not his fault... He decided to take the initiative and stop using any libraries. He recoded a new web JS framework from scratch.
+>
+> He's even giving you the source code for his brand-new framework, and in any case he's counting on the community to point out any bugs!
+>
+> After all, what could go wrong?
 
 This challenge consists in a Web framework to do HTTP requests.
 
@@ -425,13 +427,14 @@ and we finally receive the flag cookie on our beeceptor endpoint.
 
 ![challenge](./img/09-chall.png)
 
-**Description:** A colleague of yours forgot to lock his workstation
-during his coffee break, and when he returns he discovers that some of
-his files have been looked at, and maybe even stolen! He's really sad,
-because he had prepared some superb memes for Christmas, but more
-importantly, he also had sensitive information about the Root-Me
-infrastructure... Luckily for you, the network survey has captured
-what happened, so it's now your turn to find out what was stolen!
+**Description:** 
+> A colleague of yours forgot to lock his workstation
+> during his coffee break, and when he returns he discovers that some of
+> his files have been looked at, and maybe even stolen! He's really sad,
+> because he had prepared some superb memes for Christmas, but more
+> importantly, he also had sensitive information about the Root-Me
+> infrastructure... Luckily for you, the network survey has captured
+> what happened, so it's now your turn to find out what was stolen!
 
 For this challenge, we have a network capture
 `the_christmas_thief.pcapng`.
@@ -498,7 +501,8 @@ Password: RM{R3m0t3_cLi3Nt_4r3_n0t_S0_s3cur3}
 
 ![challenge](./img/10-chall.png)
 
-**Description:** You dreamt it, we did it. The shop for the famous Route-Mi platform is now available. And guess what? We're offering you a €5 discount voucher, so enjoy yourself, it's on us.
+**Description:** 
+> You dreamt it, we did it. The shop for the famous Route-Mi platform is now available. And guess what? We're offering you a €5 discount voucher, so enjoy yourself, it's on us.
 
 In this challenge, we have to deal with a parody of the [Root-Me Shop](https://shop.root-me.org). 
 
@@ -620,11 +624,12 @@ can buy the flag :-)
 
 ![challenge](./img/11-chall.png)
 
-**Description:** Every year, christmas is the opportunity for the Padoru to be in the spotlight once again!
-
-But this time, the sneaky Padoru is hiding something... The legend says that finding her secret will turn her into an evil version!!
-
-Will you uncover the Padoru secrets?
+**Description:** 
+> Every year, christmas is the opportunity for the Padoru to be in the spotlight once again!
+>
+> But this time, the sneaky Padoru is hiding something... The legend says that finding her secret will turn her into an evil version!!
+>
+> Will you uncover the Padoru secrets?
 
 This challenge consists in reversing a Windows video game. 
 
@@ -815,10 +820,11 @@ To get the flag, we can XOR `encTrueChristmasSecret` with the key `18 00 01 02 .
 
 ![challenge](./img/12-chall.png)
 
-**Description:** The previous assistant talked too much, and was
-unfortunately fired by Santa Claus. Under the pressure of the event,
-he hired the first new snowman he could find, but this one looks a lot
-less welcoming...
+**Description:** 
+> The previous assistant talked too much, and was
+> unfortunately fired by Santa Claus. Under the pressure of the event,
+> he hired the first new snowman he could find, but this one looks a lot
+> less welcoming...
 
 This challenge was maybe the most nasty of the whole advent
 calendar...  (but it was still great!)

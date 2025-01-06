@@ -11,8 +11,9 @@ Calendar made with CTF challenges.
 **Description:** 
 > This year, to easily handle people's Christmas lists,
 > the elves teamed up to develop a cutting-edge application: the Gift
-> Control Interface.  Try it out and maybe you'll get a flag from Santa
-> Claus!
+> Control Interface. 
+>
+> Try it out and maybe you'll get a flag from Santa Claus!
 
 ## Introduction
 

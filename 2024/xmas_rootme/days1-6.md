@@ -8,7 +8,8 @@ made with CTF challenges.
 
 ![challenge](./img/01-chall.png)
 
-**Description:** The number of Santa's lunti has increased by 1337 this year, and there are a lot of them! Thanks to this, they've been able to give you some very, very nice gifts. If you can't find what you're looking for, you can even suggest gifts to him - maybe they'll make them in time!
+**Description:** 
+> The number of Santa's lunti has increased by 1337 this year, and there are a lot of them! Thanks to this, they've been able to give you some very, very nice gifts. If you can't find what you're looking for, you can even suggest gifts to him - maybe they'll make them in time!
 
 This challenge consists in a web app with 2 main pages:
 - The first one to add gifts to Santa's sack,
@@ -198,10 +199,11 @@ And we finally receive the flag on the beeceptor endpoint.
 
 ![challenge](./img/02-chall.png)
 
-**Description:** According to our information, one of our auditors'
-workstations has been compromised, and some even claim that data has
-been exfiltrated. Here's a network capture from the suspected
-workstation. Can you confirm the diagnosis made by our experts?
+**Description:** 
+> According to our information, one of our auditors'
+> workstations has been compromised, and some even claim that data has
+> been exfiltrated. Here's a network capture from the suspected
+> workstation. Can you confirm the diagnosis made by our experts?
 
 For this challenge, we have a big pcapng file (19 MB). It contains quite a lot
 of data from different protocols ; it might be easy to fall into
@@ -258,9 +260,10 @@ Hey you found me! Well done!RM{M3rry_Chr1stM4s_R00T-M3}
 
 ![challenge](./img/03-chall.png)
 
-**Description:** Santa has developed a web game where you have to
-catch presents, and as luck would have it, he's come out on top of the
-scoreboard. Can you beat him?
+**Description:** 
+> Santa has developed a web game where you have to
+> catch presents, and as luck would have it, he's come out on top of the
+> scoreboard. Can you beat him?
 
 We have a web game where the goal is to move Santa's sack to catch the
 gifts.
@@ -348,9 +351,10 @@ After resuming, we get the flag:
 
 ![challenge](./img/04-chall.png)
 
-**Description:** I love rust because it's secure and fast. So I want people to do MOAR rust. 
-That's why I made a microservice to allow fast and easy remote code compilation.
-Send my your code, I'll compile it, and I know for sure I'm safe!
+**Description:** 
+> I love rust because it's secure and fast. So I want people to do MOAR rust. 
+> That's why I made a microservice to allow fast and easy remote code compilation.
+> Send my your code, I'll compile it, and I know for sure I'm safe!
 
 ```sh
 curl -sSk -X POST -H 'Content-Type: application/json' https://day4.challenges.xmas.root-me.org/remote-build -d '{"src/main.rs":"fn main() { println!(\"Hello, world!\"); }"}' --output binary
@@ -655,9 +659,10 @@ Caused by:
 
 ![challenge](./img/05-chall.png)
 
-**Description:** Santa has hired a new assistant Snowman to help him
-with his work, such as distributing presents to children. Let's meet
-him and have a chat!
+**Description:** 
+> Santa has hired a new assistant Snowman to help him
+> with his work, such as distributing presents to children. Let's meet
+> him and have a chat!
 
 In this challenge, we have to talk with a friendly snowman chatbot.
 
@@ -678,9 +683,10 @@ accepts to fulfill our request :-)
 
 ![challenge](./img/06-chall.png)
 
-**Description:** Root-Me's Santa is being very generous this year,
-giving everyone who comes to see him a little present, but he's made
-sure you can't open it until the 25th...
+**Description:** 
+> Root-Me's Santa is being very generous this year,
+> giving everyone who comes to see him a little present, but he's made
+> sure you can't open it until the 25th...
 
 When we connect to the remote, we are greeted with a message from
 Santa, and a "wrapped gift" (aka. an encrypted message):
