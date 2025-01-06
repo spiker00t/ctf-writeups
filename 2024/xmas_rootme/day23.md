@@ -1,6 +1,6 @@
 # Root-Xmas Challenge 2024 - Day 23 - Gift Control Interface (Pwn)
 
-TL;DR: Unicorn sandbox escape, heap out-of-bounds read/write in MMIO interface.
+**TL;DR:** Unicorn sandbox escape, heap out-of-bounds read/write in MMIO interface.
 
 This challenge was part of the Root-Xmas Challenge which was
 organized by [Root-Me](https://root-me.org). This event was an Advent
@@ -8,10 +8,11 @@ Calendar made with CTF challenges.
 
 ![challenge](./img/23-chall.png)
 
-**Description:** This year, to easily handle people's Christmas lists,
-the elves teamed up to develop a cutting-edge application: the Gift
-Control Interface.  Try it out and maybe you'll get a flag from Santa
-Claus!
+**Description:** 
+> This year, to easily handle people's Christmas lists,
+> the elves teamed up to develop a cutting-edge application: the Gift
+> Control Interface.  Try it out and maybe you'll get a flag from Santa
+> Claus!
 
 ## Introduction
 
