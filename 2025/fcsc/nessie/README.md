@@ -196,8 +196,8 @@ void main()
     if ((input & 8) != 0) {
       reset();
     }
-	
-	// move controls
+    
+    // move controls
     if ((input & 0x10) != 0) {
       move_up();
     }
@@ -210,18 +210,18 @@ void main()
     if ((input & 0x80) != 0) {
       move_right();
     }
-	
-	// select
+    
+    // select
     if ((input & 4) != 0) {
       pause();
     }
-	
-	// A button
+    
+    // A button
     if ((input & 2) != 0) {
       teleport();
     }
-	
-	// B button
+    
+    // B button
     if ((input & 1) != 0) {
       shoot();
     }
@@ -286,16 +286,16 @@ byte tick()
         state = 3;
       }
     }
-	else if (state == 3) {
+    else if (state == 3) {
       time_left = time_left - 1;
       if (time_left == 0) {
         lost = 1;
         play_sound(4,0xf);
-	    if (remaining_enemies == 0) {
+        if (remaining_enemies == 0) {
           state = 0;
           return 0;
         }
-	  }
+      }
     }
     else if (state == 6) {
       time_left = time_left - 1;
@@ -311,8 +311,8 @@ byte tick()
         }
       }
     }
-	else {
-	  state = 0;
+    else {
+      state = 0;
       return 0;
     }
   }
@@ -465,7 +465,7 @@ void write_buffer(byte n, byte* src)
     if ((byte_count & 0x3f) == 0) {
       do_hash();
       byte_count = 0;
-	  block_count = block_count + 1;
+      block_count = block_count + 1;
     }
   }
   return;
@@ -480,7 +480,7 @@ the win screen. `hash_init` is some constant value.
 ```c
 void init_buffer(void)
 {
-  for (i = 0; i < 0x20; i = i + 1)
+  for (i = 0; i < 0x20; i = i + 1) {
     buf_hash[i] = hash_init[i];
   } 
   block_count = 0
@@ -598,9 +598,9 @@ The flag appears after a few minutes.
 $ time python solve.py
 FCSC{2a178a4923c2303b85f99bbd5dcff4818d50ecf218c8e51d968a8eeab6e24f80}
 
-real	3m10.941s
-user	3m9.690s
-sys	0m0.494s
+real    3m10.941s
+user    3m9.690s
+sys 0m0.494s
 ```
 
 **FLAG:** `FCSC{2a178a4923c2303b85f99bbd5dcff4818d50ecf218c8e51d968a8eeab6e24f80}`

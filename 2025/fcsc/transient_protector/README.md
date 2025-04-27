@@ -70,7 +70,7 @@ int main(int argc,undefined8 *argv)
       printf("compute(0x%lx) = %lx\n", input, res);
       return 0;
     }
-	return 1;
+    return 1;
   }
   else {
     printf("Usage: %s <input>\n", *argv);
@@ -111,10 +111,10 @@ undefined8 check_platform(void)
     n = n + (result == expected);
   }
   if (0x32 < n) {
-	puts("OK !");
+    puts("OK !");
   }
   else {
-  	puts("KO !");
+    puts("KO !");
   }
   return (0x32 < n);
 }
@@ -281,7 +281,7 @@ though. But... why all these NOPs?
          24 20
 00121d0b e8 70 f4        CALL       jump_to_nops
          fd ff
-		 
+         
 00121d10 48 0f b6 3f     MOVZX      RDI,byte ptr [RDI]
 00121d14 48 0f b6 36     MOVZX      RSI,byte ptr [RSI]
 00121d18 4d 0f b6 00     MOVZX      R8,byte ptr [R8]
@@ -398,7 +398,7 @@ Let's get back to the code of the `wtf` function.
          24 20
 00121d0b e8 70 f4        CALL       jump_to_nops
          fd ff
-		 
+         
 00121d10 48 0f b6 3f     MOVZX      RDI,byte ptr [RDI]
 00121d14 48 0f b6 36     MOVZX      RSI,byte ptr [RSI]
 00121d18 4d 0f b6 00     MOVZX      R8,byte ptr [R8]
@@ -516,7 +516,7 @@ ulong compute(ulong input)
   undefined1 buf_input [8];
   
   memset(local_58,0,0x40);
-  for (int i = 0; i < 8; i = i + 1)
+  for (int i = 0; i < 8; i = i + 1) {
     buf_input[i] = (input >> ((i << 3) & 0x3f));
   }
   do {
@@ -525,7 +525,7 @@ ulong compute(ulong input)
   } while ((x & (y ^ 0xff) & 1) != 0);
   encode_output(buf_output,local_58);
   output = 0;
-  for (int i = 0; i < 8; i = i + 1)
+  for (int i = 0; i < 8; i = i + 1) {
     output = buf_output[i] << ((i << 3) & 0x3f) | output;
   }
   return output;
@@ -720,7 +720,7 @@ the circuit.
 I also had to reimplement the logic formulas in Python, such as
 `formula6` shown above.
 
-```
+```python
 def formula6(inp, out, reg):
     res = 0
     res = res | (ev(inp["narg1"], out, reg) & ev(inp["narg2"], out, reg) & ev(inp["narg4"], out, reg))
@@ -781,7 +781,7 @@ for (function, inputs, outputs) in parsed_blocks:
         assign_output(outputs[1], xor(inputs, out_values, reg_values))
         assign_output(outputs[0], 1 - xor(inputs, out_values, reg_values))
     elif function == '20650' or function == '203f0':
-		# splitters
+        # splitters
         for i in range(0,len(outputs)//2):
             assign_output(outputs[2*i], ev(inputs["narg1"], out_values, reg_values))
             assign_output(outputs[2*i+1], ev(inputs["arg1"], out_values, reg_values))
