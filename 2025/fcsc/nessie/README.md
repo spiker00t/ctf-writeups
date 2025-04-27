@@ -6,9 +6,9 @@
 
 **Description:**
 > A friend of yours, in his forties, spent his carefree youth playing a game called Nessie. He never managed to finish the game despite having spent long hours in front of his NES.
-
+>
 > Will you be able to do better than him and win his undying gratefulness?
-
+>
 > The game has been tested successfully on the last versions of:
 > - Mesen,
 > - Nintendulator,
