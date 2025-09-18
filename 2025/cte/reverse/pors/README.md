@@ -1,12 +1,15 @@
-# (Reverse - CWTE 2025) PORS
+# CWTE 2025 - Write-Up for the challenge PORS (Reverse)
 
-**TL;DR:** Obfuscated program whose logic is encoded in sigreturn frames.
+**TL;DR:** Program obfuscation based on sigreturn frames.
 
-PORS is a challenge I authored for Compete With Team Europe 2025, a
-training CTF where all the ECSC national teams play against Team
-Europe. It has been solved by 3 teams during the CTF.
+PORS is a challenge I authored on the behalf of ECSC Team France for
+Compete With Team Europe 2025, a training CTF where all the ECSC
+national teams play against Team Europe. It has been solved by 3 teams
+during the CTF.
 
-## Detailed description
+**Description** I suck at pwn, so I do reverse... and I am French btw.
+
+## Introduction
 
 For this challenge we are given two files:
 - an ELF x86-64 binary `pors`
@@ -66,6 +69,8 @@ undefined8 FUN_00401206(void)
   return 0;
 }
 ```
+
+## Obfuscation
 
 But... where is the actual program? The one that prompts us?
 
@@ -153,6 +158,8 @@ conditional branch: for instance, in the following block, if
 00000176 0f 05           SYSCALL
 ```
 
+## Deobfuscation
+
 The principal difficulty is that the logic is interleaved between both
 the code blocks and the values that are previously attributed to
 registers before the execution of each block (that are stored in the
@@ -198,6 +205,8 @@ this step.
 
 The full script to deobfuscate the program is available
 [here](./src/deobf.py).
+
+## Solving
 
 Then, the pseudo-code can more or less be reconstituted in a
 decompiler. After googling a bit or asking our favorite LLM, we figure
