@@ -1,6 +1,6 @@
 # (Reverse - CWTE 2025) PORS
 
-TL;DR: Obfuscated program whose logic is encoded in sigreturn frames.
+**TL;DR:** Obfuscated program whose logic is encoded in sigreturn frames.
 
 PORS is a challenge I authored for Compete With Team Europe 2025, a
 training CTF where all the ECSC national teams play against Team
@@ -41,14 +41,12 @@ undefined8 FUN_00401206(void)
   local_10 = fopen("program.bin","r");
   if (local_10 == (FILE *)0x0) {
     puts("[-] Failed to load program :/");
-                    /* WARNING: Subroutine does not return */
     exit(1);
   }
   fread(&local_2c,4,1,local_10);
   local_18 = mmap((void *)0x13370000,(long)(int)((local_2c & 0xfffff000) + 0x1000),7,0x22,-1,0);
   if (local_18 != (void *)0x13370000) {
     puts("[-] init failed, sorry :/");
-                    /* WARNING: Subroutine does not return */
     exit(1);
   }
   fread((void *)0x13370000,1,(long)(int)local_2c,local_10);
@@ -56,14 +54,12 @@ undefined8 FUN_00401206(void)
   local_20 = mmap((void *)0x42420000,(long)(int)((local_30 & 0xfffff000) + 0x1000),3,0x22,-1,0);
   if (local_20 != (void *)0x42420000) {
     puts("[-] init failed, sorry :/");
-                    /* WARNING: Subroutine does not return */
     exit(1);
   }
   fread((void *)0x42420000,1,(long)(int)local_30,local_10);
   local_28 = mmap((void *)0xcafe0000,0x2000,3,0x22,-1,0);
   if (local_28 != (void *)0xcafe0000) {
     puts("[-] init failed, sorry :/");
-                    /* WARNING: Subroutine does not return */
     exit(1);
   }
   syscall();
@@ -201,7 +197,7 @@ corresponding sigreturn frames, particular attention is required for
 this step.
 
 The full script to deobfuscate the program is available
-[here](./src/deobf.py)
+[here](./src/deobf.py).
 
 Then, the pseudo-code can more or less be reconstituted in a
 decompiler. After googling a bit or asking our favorite LLM, we figure
@@ -222,7 +218,7 @@ The expected input is the numbers in the solved Suguru grid, as a
 81-char long string. Suguru solvers using Z3 can easily be found on
 github. 
 
-The solver script is available [here](./src/solve.py)
+The solver script is available [here](./src/solve.py).
 
 After finding the (unique) solution:
 `141253514235414232142323541235141232142323541231514132142323251351541434143232521`, we input it to the binary to get the flag.
