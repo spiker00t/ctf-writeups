@@ -7,7 +7,8 @@ Compete With Team Europe 2025, a training CTF where all the ECSC
 national teams play against Team Europe. It has been solved by 3 teams
 during the CTF.
 
-**Description** I suck at pwn, so I do reverse... and I am French btw.
+**Description:** 
+> I suck at pwn, so I do reverse... and I am French btw.
 
 ## Introduction
 
