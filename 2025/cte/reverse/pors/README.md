@@ -225,8 +225,7 @@ flag. Otherwise, it calls another function that prints the "wrong
 input" message.
 
 The expected input is the numbers in the solved Suguru grid, as a
-81-char long string. Suguru solvers using Z3 can easily be found on
-github. 
+81-char long string. It is possible to use Z3 to solve the puzzle.
 
 The solver script is available [here](./src/solve.py).
 
